@@ -5,10 +5,13 @@ import telran.view.*;
 import java.util.*;
 public class BullsCowsClientAppl {
 
-	private static final int PORT = 5000;
+	private static final String DEFAULT_HOST = "localhost";
+	private static final int DEFAULT_PORT = 5000;
 
 	public static void main(String[] args) {
-		TcpClient tcpClient = new TcpClient("localhost", PORT);
+		String hostIp = args.length > 0 ? args[0] : DEFAULT_HOST;
+		int port = args.length > 1 ? Integer.parseInt(args[1]) : DEFAULT_PORT;
+		TcpClient tcpClient = new TcpClient(hostIp, port);
 		BullsCowsService bullsCows = new BullsCowsProxy(tcpClient);
 		List<Item> items = BullsCowsApplItems.getItems(bullsCows);
 		items.add(Item.of("Exit & Close connection", io -> tcpClient.close(), true));
